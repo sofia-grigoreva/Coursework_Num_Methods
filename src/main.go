@@ -11,6 +11,7 @@ import (
 
 	"kr/src/algorithm"
 	"kr/src/dataset"
+	"kr/src/report/render"
 	"kr/src/utils"
 )
 
@@ -59,9 +60,9 @@ func main() {
 		dir := filepath.Join("output", s.Name)
 		os.MkdirAll(dir, 0755)
 		outputs := map[string]image.Image{
-			"lsd.png":    algorithm.RenderLSDOverlay(img, segments),
-			"ransac.png": algorithm.RenderRANSACOverlay(img, clusters),
-			"tsp.png":    algorithm.RenderVanishingPointsOverlay(img, r.VanishingPoints, s.Calibration),
+			"lsd.png":    render.RenderLSDOverlay(img, segments),
+			"ransac.png": render.RenderRANSACOverlay(img, clusters),
+			"tsp.png":    render.RenderVanishingPointsOverlay(img, r.VanishingPoints, s.Calibration),
 		}
 		for filename, canvas := range outputs {
 			f, err := os.Create(filepath.Join(dir, filename))

@@ -10,8 +10,6 @@ func RefineVanishingPointSVD(lines []utils.Segment, k utils.Matrix3) (utils.Vec3
 	if _, ok := k.Inverse(); !ok {
 		return utils.Vec3{}, utils.HomogeneousPoint{}, false
 	}
-	// lᵀv = 0 and v = Kd imply (Kᵀl)ᵀd = 0.
-	// Section 3.3 of the paper prints K⁻¹l, apparently a typo for line coefficients.
 	transposed := k.Transpose()
 	rows := make([][3]float64, 0, len(lines))
 	for _, s := range lines {
@@ -59,7 +57,6 @@ func OrthogonalizeDirections(directions [3]utils.Vec3) ([3]utils.Vec3, bool) {
 	if !ok {
 		return [3]utils.Vec3{}, false
 	}
-	// D = UΣVᵀ, so the nearest orthogonal matrix is U Vᵀ.
 	var orthogonal utils.Matrix3
 	for row := 0; row < 3; row++ {
 		for column := 0; column < 3; column++ {
@@ -105,7 +102,6 @@ func BuildOrthogonalBasis(directions []utils.Vec3) ([3]utils.Vec3, bool) {
 			missingAxis = 3 - pair[0] - pair[1]
 		}
 	}
-	// Exactly one orthogonal pair identifies the two supported directions in §4.1.
 	if orthogonalPairs == 1 {
 		third, ok := utils.Normalize3(utils.Cross3(normalized[(missingAxis+1)%3], normalized[(missingAxis+2)%3]))
 		if !ok {
@@ -120,9 +116,6 @@ func approximatelyOrthogonal(a, b utils.Vec3) bool {
 	return math.Abs(utils.Dot3(a, b)) <= math.Sin(orthogonalityToleranceDegrees*math.Pi/180)+epsilon
 }
 
-// SingularValueDecomposition computes A = UΣVᵀ for a matrix with three columns.
-// One-sided Jacobi rotations orthogonalize A's columns directly. Zero rows pad
-// two-line systems to three rows. Singular values are returned in descending order.
 func SingularValueDecomposition(rows [][3]float64) ([][3]float64, [3]float64, utils.Matrix3, bool) {
 	columns := make([][3]float64, max(3, len(rows)))
 	scale := 0.0
@@ -210,8 +203,6 @@ func SingularValueDecomposition(rows [][3]float64) ([][3]float64, [3]float64, ut
 			}
 			continue
 		}
-		// A zero singular value leaves U's column undetermined. Complete its
-		// orthonormal basis so U Vᵀ is also defined for rank-deficient D.
 		singular[column] = 0
 		for candidate := range left {
 			for row := range left {

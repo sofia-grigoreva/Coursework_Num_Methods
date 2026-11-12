@@ -37,9 +37,7 @@ type savedPoints struct {
 	VanishingPoints json.RawMessage `json:"vanishing_points"`
 }
 
-// pointDirection converts a homogeneous pixel point to the York reference frame.
 func pointDirection(point utils.HomogeneousPoint, calibration utils.Matrix3) (utils.Vec3, bool) {
-	// Remove arbitrary homogeneous scale before using finite-precision geometry.
 	scale := math.Max(math.Abs(point.X), math.Max(math.Abs(point.Y), math.Abs(point.W)))
 	if scale == 0 || math.IsNaN(scale) || math.IsInf(scale, 0) {
 		return utils.Vec3{}, false
@@ -49,15 +47,10 @@ func pointDirection(point utils.HomogeneousPoint, calibration utils.Matrix3) (ut
 		return utils.Vec3{}, false
 	}
 	direction := inverse.MulVec3(utils.Vec3{X: point.X / scale, Y: point.Y / scale, Z: point.W / scale})
-	// Image Y points down; York's Gaussian-sphere Y points up. This is the fixed
-	// convention used by DeepLSD's unproject_vp_to_world for York evaluation:
-	// https://github.com/cvg/DeepLSD/blob/main/deeplsd/evaluation/ls_evaluation.py
 	direction.Y = -direction.Y
 	return utils.Normalize3(direction)
 }
 
-// matchAngles minimizes the sum of angular errors over one-to-one assignments.
-// Missing predictions produce no zero-valued errors; completeness is separate.
 func matchAngles(points, reference []utils.Vec3) []float64 {
 	bestErrors := []float64{}
 	if len(points) == 0 || len(points) > len(reference) {
@@ -79,9 +72,6 @@ func matchAngles(points, reference []utils.Vec3) []float64 {
 			if used[referenceIndex] {
 				continue
 			}
-			// The half-angle formula equals acos(|dot|) for unit vectors.
-			// Subtracting identical coordinates preserves exact zero, including
-			// at the user-selectable zero-degree tolerance.
 			sign := 1.0
 			if utils.Dot3(points[index], target) < 0 {
 				sign = -1

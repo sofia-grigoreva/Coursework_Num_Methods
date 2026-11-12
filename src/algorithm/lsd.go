@@ -51,7 +51,6 @@ func DetectLineSegmentsLSD(img dataset.GrayImage) []utils.Segment {
 		if len(region) < 8 {
 			continue
 		}
-		// All region pixels are aligned, so the NFA tail reduces to p^n, p = 1/8.
 		if segment, ok := fit(region); ok && logTests+float64(len(region))*logProbability < 0 {
 			out = append(out, segment)
 		}

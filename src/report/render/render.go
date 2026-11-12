@@ -1,10 +1,11 @@
-package algorithm
+package render
 
 import (
 	"image"
 	"image/color"
 	"math"
 
+	"kr/src/algorithm"
 	"kr/src/dataset"
 	"kr/src/utils"
 )
@@ -38,7 +39,7 @@ func DrawSegment(canvas *image.RGBA, segment utils.Segment, lineColor color.RGBA
 	}
 }
 
-func RenderRANSACOverlay(source dataset.GrayImage, clusters []Cluster) *image.RGBA {
+func RenderRANSACOverlay(source dataset.GrayImage, clusters []algorithm.Cluster) *image.RGBA {
 	canvas := RenderLSDOverlay(source, nil)
 	colors := []color.RGBA{{R: 255, A: 255}, {G: 255, A: 255}, {B: 255, A: 255}}
 	for group, cluster := range clusters {
