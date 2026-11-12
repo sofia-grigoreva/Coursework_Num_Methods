@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <title>Курсовая работа</title>
+    <link rel="stylesheet" href="./style.css?v=10">
+    <script defer src="./quality.js?v=9"></script>
+    <script defer src="./app.js?v=9"></script>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <span>Курсовая работа</span>
+      <nav aria-label="Разделы сайта">
+        <a href="#examples">Примеры</a>
+        <a href="#quality">Оценка</a>
+      </nav>
+    </header>
+
+    <main>
+      <p id="loading" class="loading" role="status">Загружаем примеры…</p>
+      <p id="error" class="error" hidden role="alert"></p>
+
+      <div id="app" hidden>
+        <section id="examples" class="page">
+          <h1>Примеры</h1>
+          <ul id="examples-list" class="examples-list"></ul>
+        </section>
+
+        <section id="example" class="page" hidden>
+          <a class="back-link" href="#examples">← Примеры</a>
+          <div id="example-body"></div>
+        </section>
+
+        <section id="quality" class="page quality-page" hidden>
+          <h1>Оценка</h1>
+          <p id="quality-status" role="status">Загружаем численные результаты…</p>
+          <div id="quality-content" hidden>
+            <section class="metric-section" aria-labelledby="completeness-heading">
+              <h2 id="completeness-heading">Полнота результата</h2>
+              <div id="completeness-table" class="table-scroll"></div>
+            </section>
+
+            <section class="metric-section" aria-labelledby="angular-heading">
+              <h2 id="angular-heading">Угловые отклонения точек схода</h2>
+              <div id="angular-summary" class="table-scroll"></div>
+              <div class="chart-heading">
+                <h3>Доля точек с ошибкой не больше заданного угла</h3>
+              </div>
+              <div id="angle-chart" class="chart-container"></div>
+            </section>
+
+            <section class="metric-section" aria-labelledby="success-heading">
+              <h2 id="success-heading">Правильно найденные точки и полностью успешные изображения</h2>
+              <label class="tolerance-control" for="angle-tolerance">Допустимая угловая ошибка
+                <span class="tolerance-value">
+                  <input id="angle-tolerance" type="number" min="0" max="90" step="any" value="5" required aria-describedby="tolerance-error">
+                  <span>°</span>
+                </span>
+              </label>
+              <p id="tolerance-error" class="field-error" role="alert" hidden>Введите число от 0 до 90 градусов. Показаны результаты для последнего допустимого значения.</p>
+              <div id="success-table" class="table-scroll" aria-live="polite"></div>
+            </section>
+
+            <section class="metric-section" aria-labelledby="maximum-heading">
+              <h2 id="maximum-heading">Максимальная угловая ошибка на каждом изображении</h2>
+              <div id="maximum-chart" class="chart-container"></div>
+            </section>
+
+            <details id="quality-issues" class="methodology" hidden>
+              <summary>Недоступные и недопустимые данные</summary>
+              <ul id="quality-issues-list"></ul>
+            </details>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <noscript>
+      <p>Для просмотра примеров и оценки точек схода включите JavaScript.</p>
+    </noscript>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+# Build artifacts
+/bin/
+/build/
+/dist/
+/yorkvp
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.a
+*.o
+
+# Test binaries, coverage and profiling
+*.test
+*.out
+*.coverprofile
+coverage/
+coverage*.html
+*.prof
+*.pprof
+
+# Local Go workspace
+/go.work
+/go.work.sum
+
+# macOS metadata
+.DS_Store
+/docs/
