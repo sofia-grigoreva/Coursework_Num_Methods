@@ -74,7 +74,7 @@ function renderSuccessTable() {
   const pointTotal = referencePointTotal();
   const imageTotal = images.filter(image => image.referenceCount === 3).length;
   const percent = (count, total) => total ? `${qualityPercent.format(100 * count / total)} %` : "Нет эталона";
-  qualityTable("success-table", ["Метод", "Правильных точек, шт.", "Доля правильных точек, %", "Успешных изображений, шт.", "Доля успешных изображений, %"], qualityMethods.map(method => {
+  qualityTable("success-table", ["Метод", "Успешных точек, шт.", "Доля успешных точек, %", "Успешных изображений, шт.", "Доля успешных изображений, %"], qualityMethods.map(method => {
     const correctPoints = qualityState.errors[method.key].filter(error => error <= qualityState.tolerance).length;
     const correctImages = images.filter(image => image.referenceCount === 3 && image[method.key].maximumError !== null && image[method.key].maximumError <= qualityState.tolerance).length;
     return [method.name, `${correctPoints} из ${pointTotal}`, percent(correctPoints, pointTotal), `${correctImages} из ${imageTotal}`, percent(correctImages, imageTotal)];
